@@ -1,0 +1,79 @@
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* Estilos de la tabla */
+table {
+    
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+    background-color: #fff; /* Fondo blanco para contraste */
+     /* Bordes redondeados */
+}
+
+th, td {
+    border: 2px solid #010101;
+    padding: 10px;
+    text-align: left;
+    font-size: 16px;
+    
+}
+
+th {
+    background-color: #4a76a8; /* Color de fondo más vibrante para los encabezados */
+    color: white;
+    font-weight: bold;
+}
+
+td {
+    background-color: #f8f9fa; /* Fondo claro para celdas */
+}
+
+/* Estilo para botones */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #4a76a8; /* Color de fondo para botones */
+    color: white; /* Color del texto */
+    cursor: pointer;
+    border-radius: 4px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+button:hover {
+    background-color: #3b5c8a; /* Color de fondo al pasar el mouse */
+}
+
+button:active {
+    background-color: #2c4567; /* Color de fondo al hacer clic */
+}
+
+/* Estilo para contenedores de matrices */
+.matrix-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff; /* Fondo blanco para contraste */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+.matrix {
+    margin-bottom: 20px;
+}
+
+pre {
+    background-color: #f0f0f0; /* Fondo gris claro para el pre */
+    padding: 10px;
+    border-radius: 4px; /* Bordes redondeados */
+    overflow-x: auto; /* Scroll horizontal si es necesario */
+}
