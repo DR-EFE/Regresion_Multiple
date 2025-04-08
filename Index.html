@@ -1,110 +1,318 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regresión Múltiple</title>
-
-    <link rel="stylesheet" href="style.css">
+    <title>Calculadora de Regresión Múltiple</title>
+   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Calculadora de Regresión Múltiple</h1>
-    <table id="inputTable">
-        <thead>
-            <tr>
-                <th>x1</th>
-                <th>x2</th>
-                <th>Y</th>
-                <th><button onclick="addRow()">Agregar fila</button></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="number" name="x1"></td>
-                <td><input type="number" name="x2"></td>
-                <td><input type="number" name="y"></td>
-                <td><button onclick="removeRow(this)">Eliminar</button></td>
-            </tr>
-        </tbody>
-    </table>
-    <button onclick="calculate()">Calcular</button>
+    <div class="container">
+        <header>
+            <h1>Calculadora de Regresión Múltiple</h1>
+            <p>Herramienta para calcular la regresión múltiple con dos variables independientes</p>
+        </header>
 
-    <h2>Resultados</h2>
-    <table id="resultTable">
-        <thead>
-            <tr>
-                <th>Y*x1</th>
-                <th>Y*x2</th>
-                <th>x1*x2</th>
-                <th>x1^2</th>
-                <th>x2^2</th>
-                <th>y*</th>
-                <th>e = y - y*</th>
-                <th>e^2</th>
-                <th>y^2</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>Total</th>
-                <td id="totalYx1"></td>
-                <td id="totalYx2"></td>
-                <td id="totalX1X2"></td>
-                <td id="totalX1Sqr"></td>
-                <td id="totalX2Sqr"></td>
-                <td id="totalYStar"></td>
-                <td id="totalE"></td>
-                <td id="totalESqr"></td>
-                <td id="totalYSqr"></td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <div class="matrix-container" id="matrixContainer">
-        <h2>Determinantes de las Matrices</h2>
-        <div class="matrix" id="matrixD0">
-            <h3>Matriz D0</h3>
-            <pre id="matrixD0Content"></pre>
-            <strong>Determinante:</strong> <span id="determinantD0"></span>
-        </div>
-        <div class="matrix" id="matrixD1">
-            <h3>Matriz D1</h3>
-            <pre id="matrixD1Content"></pre>
-            <strong>Determinante:</strong> <span id="determinantD1"></span>
-        </div>
-        <div class="matrix" id="matrixD2">
-            <h3>Matriz D2</h3>
-            <pre id="matrixD2Content"></pre>
-            <strong>Determinante:</strong> <span id="determinantD2"></span>
-        </div>
-        <div class="matrix" id="matrixD3">
-            <h3>Matriz D3</h3>
-            <pre id="matrixD3Content"></pre>
-            <strong>Determinante:</strong> <span id="determinantD3"></span>
-
+        <div class="card">
+            <h2>Datos de entrada</h2>
+            <div class="table-responsive">
+                <table id="inputTable">
+                    <thead>
+                        <tr>
+                            <th>x₁</th>
+                            <th>x₂</th>
+                            <th>Y</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="number" name="x1" step="any" placeholder="Valor x₁"></td>
+                            <td><input type="number" name="x2" step="any" placeholder="Valor x₂"></td>
+                            <td><input type="number" name="y" step="any" placeholder="Valor Y"></td>
+                            <td><button class="btn btn-danger" onclick="removeRow(this)">Eliminar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-primary" onclick="addRow()">+ Agregar fila</button>
+                <button class="btn btn-success" onclick="calculate()">Calcular regresión</button>
+            </div>
         </div>
 
+        <div class="card" id="resultsCard" style="display: none;">
+            <h2>Resultados del cálculo</h2>
+            
+            <div class="table-responsive">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>Y·x₁</th>
+                            <th>Y·x₂</th>
+                            <th>x₁·x₂</th>
+                            <th>x₁²</th>
+                            <th>x₂²</th>
+                            <th>Y*</th>
+                            <th>e = Y - Y*</th>
+                            <th>e²</th>
+                            <th>Y²</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <td id="totalYx1"></td>
+                            <td id="totalYx2"></td>
+                            <td id="totalX1X2"></td>
+                            <td id="totalX1Sqr"></td>
+                            <td id="totalX2Sqr"></td>
+                            <td id="totalYStar"></td>
+                            <td id="totalE"></td>
+                            <td id="totalESqr"></td>
+                            <td id="totalYSqr"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
 
+        <div class="card" id="matricesCard" style="display: none;">
+            <h2>Determinantes de las matrices</h2>
+            <div class="matrix-grid">
+                <div class="matrix-box">
+                    <h3>Matriz D₀</h3>
+                    <pre id="matrixD0Content"></pre>
+                    <strong>Determinante:</strong> <span id="determinantD0"></span>
+                </div>
+                <div class="matrix-box">
+                    <h3>Matriz D₁</h3>
+                    <pre id="matrixD1Content"></pre>
+                    <strong>Determinante:</strong> <span id="determinantD1"></span>
+                </div>
+                <div class="matrix-box">
+                    <h3>Matriz D₂</h3>
+                    <pre id="matrixD2Content"></pre>
+                    <strong>Determinante:</strong> <span id="determinantD2"></span>
+                </div>
+                <div class="matrix-box">
+                    <h3>Matriz D₃</h3>
+                    <pre id="matrixD3Content"></pre>
+                    <strong>Determinante:</strong> <span id="determinantD3"></span>
+                </div>
+            </div>
+        </div>
 
-        <strong>Valores de los coeficientes:</strong> <span id="determinantD3"></span>
-        <div>Coeficiente B0: <span id="CoeficienteB0"></span></div>
-        <div>Coeficiente B1: <span id="CoeficienteB1"></span></div>
-        <div>Coeficiente B2: <span id="CoeficienteB2"></span></div>
-        <div id="resultadoSyy">El valor de Syy es: <span id="valorSyy"></span></div>
-        <div id="resultadoSe">El valor de Se es: <span id="valorSe"></span></div>
-        <div id="ecuacion">La ecuación de la regresión es: <span id="ecuacion"></span></div>
-
-
-
-
+        <div class="results-section" id="coefficientsSection" style="display: none;">
+            <h2>Coeficientes de la regresión</h2>
+            <div class="coefficient">Coeficiente β₀: <span id="CoeficienteB0"></span></div>
+            <div class="coefficient">Coeficiente β₁: <span id="CoeficienteB1"></span></div>
+            <div class="coefficient">Coeficiente β₂: <span id="CoeficienteB2"></span></div>
+            <div class="coefficient" id="resultadoSyy">Valor de Syy: <span id="valorSyy"></span></div>
+            <div class="coefficient" id="resultadoSe">Valor de Se: <span id="valorSe"></span></div>
+            <div class="equation" id="ecuacionDiv">La ecuación de la regresión es: <span id="ecuacion"></span></div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.1/math.min.js"></script>
-    <script src="/script.js"></script>
+    <script>
+        // Función para agregar una nueva fila a la tabla de entrada
+        function addRow() {
+            const tbody = document.querySelector('#inputTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="number" name="x1" step="any" placeholder="Valor x₁"></td>
+                <td><input type="number" name="x2" step="any" placeholder="Valor x₂"></td>
+                <td><input type="number" name="y" step="any" placeholder="Valor Y"></td>
+                <td><button class="btn btn-danger" onclick="removeRow(this)">Eliminar</button></td>
+            `;
+            tbody.appendChild(newRow);
+        }
+
+        // Función para eliminar una fila
+        function removeRow(button) {
+            const tbody = document.querySelector('#inputTable tbody');
+            if (tbody.children.length > 1) {
+                button.closest('tr').remove();
+            } else {
+                alert('Debe existir al menos una fila de datos');
+            }
+        }
+
+        // Función principal de cálculo
+        function calculate() {
+            // Obtener todos los datos de la tabla de entrada
+            const rows = document.querySelectorAll('#inputTable tbody tr');
+            const data = [];
+            
+            // Recopilar datos de cada fila
+            rows.forEach(row => {
+                const x1 = parseFloat(row.querySelector('input[name="x1"]').value);
+                const x2 = parseFloat(row.querySelector('input[name="x2"]').value);
+                const y = parseFloat(row.querySelector('input[name="y"]').value);
+                
+                if (!isNaN(x1) && !isNaN(x2) && !isNaN(y)) {
+                    data.push({ x1, x2, y });
+                }
+            });
+            
+            if (data.length < 3) {
+                alert('Se necesitan al menos 3 filas con datos válidos para realizar el cálculo de regresión múltiple');
+                return;
+            }
+            
+            // Mostrar las secciones de resultados
+            document.getElementById('resultsCard').style.display = 'block';
+            document.getElementById('matricesCard').style.display = 'block';
+            document.getElementById('coefficientsSection').style.display = 'block';
+            
+            // Cálculos de la regresión múltiple
+            let sumX1 = 0, sumX2 = 0, sumY = 0;
+            let sumX1X2 = 0, sumX1Sqr = 0, sumX2Sqr = 0;
+            let sumYX1 = 0, sumYX2 = 0, sumYSqr = 0;
+            
+            // Calcular sumas básicas
+            data.forEach(row => {
+                sumX1 += row.x1;
+                sumX2 += row.x2;
+                sumY += row.y;
+                sumX1X2 += row.x1 * row.x2;
+                sumX1Sqr += row.x1 * row.x1;
+                sumX2Sqr += row.x2 * row.x2;
+                sumYX1 += row.y * row.x1;
+                sumYX2 += row.y * row.x2;
+                sumYSqr += row.y * row.y;
+            });
+            
+            const n = data.length;
+            
+            // Matrices para calcular los coeficientes
+            const matrixD0 = [
+                [n, sumX1, sumX2],
+                [sumX1, sumX1Sqr, sumX1X2],
+                [sumX2, sumX1X2, sumX2Sqr]
+            ];
+            
+            const matrixD1 = [
+                [sumY, sumX1, sumX2],
+                [sumYX1, sumX1Sqr, sumX1X2],
+                [sumYX2, sumX1X2, sumX2Sqr]
+            ];
+            
+            const matrixD2 = [
+                [n, sumY, sumX2],
+                [sumX1, sumYX1, sumX1X2],
+                [sumX2, sumYX2, sumX2Sqr]
+            ];
+            
+            const matrixD3 = [
+                [n, sumX1, sumY],
+                [sumX1, sumX1Sqr, sumYX1],
+                [sumX2, sumX1X2, sumYX2]
+            ];
+            
+            // Calcular determinantes
+            const detD0 = math.det(matrixD0);
+            const detD1 = math.det(matrixD1);
+            const detD2 = math.det(matrixD2);
+            const detD3 = math.det(matrixD3);
+            
+            // Calcular coeficientes
+            const b0 = detD1 / detD0;
+            const b1 = detD2 / detD0;
+            const b2 = detD3 / detD0;
+            
+            // Calcular valores predichos y errores
+            const resultTableBody = document.querySelector('#resultTable tbody');
+            resultTableBody.innerHTML = '';
+            
+            let sumYStar = 0, sumE = 0, sumESqr = 0;
+            
+            data.forEach(row => {
+                const yStar = b0 + b1 * row.x1 + b2 * row.x2;
+                const e = row.y - yStar;
+                const eSqr = e * e;
+                
+                sumYStar += yStar;
+                sumE += e;
+                sumESqr += eSqr;
+                
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${(row.y * row.x1).toFixed(4)}</td>
+                    <td>${(row.y * row.x2).toFixed(4)}</td>
+                    <td>${(row.x1 * row.x2).toFixed(4)}</td>
+                    <td>${(row.x1 * row.x1).toFixed(4)}</td>
+                    <td>${(row.x2 * row.x2).toFixed(4)}</td>
+                    <td>${yStar.toFixed(4)}</td>
+                    <td>${e.toFixed(4)}</td>
+                    <td>${eSqr.toFixed(4)}</td>
+                    <td>${(row.y * row.y).toFixed(4)}</td>
+                `;
+                resultTableBody.appendChild(newRow);
+            });
+            
+            // Actualizar totales en la tabla de resultados
+            document.getElementById('totalYx1').textContent = sumYX1.toFixed(4);
+            document.getElementById('totalYx2').textContent = sumYX2.toFixed(4);
+            document.getElementById('totalX1X2').textContent = sumX1X2.toFixed(4);
+            document.getElementById('totalX1Sqr').textContent = sumX1Sqr.toFixed(4);
+            document.getElementById('totalX2Sqr').textContent = sumX2Sqr.toFixed(4);
+            document.getElementById('totalYStar').textContent = sumYStar.toFixed(4);
+            document.getElementById('totalE').textContent = sumE.toFixed(4);
+            document.getElementById('totalESqr').textContent = sumESqr.toFixed(4);
+            document.getElementById('totalYSqr').textContent = sumYSqr.toFixed(4);
+            
+            // Actualizar contenido de matrices
+            document.getElementById('matrixD0Content').textContent = formatMatrix(matrixD0);
+            document.getElementById('matrixD1Content').textContent = formatMatrix(matrixD1);
+            document.getElementById('matrixD2Content').textContent = formatMatrix(matrixD2);
+            document.getElementById('matrixD3Content').textContent = formatMatrix(matrixD3);
+            
+            // Actualizar determinantes
+            document.getElementById('determinantD0').textContent = detD0.toFixed(4);
+            document.getElementById('determinantD1').textContent = detD1.toFixed(4);
+            document.getElementById('determinantD2').textContent = detD2.toFixed(4);
+            document.getElementById('determinantD3').textContent = detD3.toFixed(4);
+            
+            // Actualizar coeficientes
+            document.getElementById('CoeficienteB0').textContent = b0.toFixed(4);
+            document.getElementById('CoeficienteB1').textContent = b1.toFixed(4);
+            document.getElementById('CoeficienteB2').textContent = b2.toFixed(4);
+            
+            // Calcular Syy y Se
+            const yMean = sumY / n;
+            let syy = 0;
+            
+            data.forEach(row => {
+                syy += Math.pow(row.y - yMean, 2);
+            });
+            
+            document.getElementById('valorSyy').textContent = syy.toFixed(4);
+            document.getElementById('valorSe').textContent = sumESqr.toFixed(4);
+            
+            // Mostrar ecuación de regresión
+            document.getElementById('ecuacion').textContent = `Y = ${b0.toFixed(4)} + ${b1.toFixed(4)}·x₁ + ${b2.toFixed(4)}·x₂`;
+        }
+        
+        // Función para formatear matrices para mostrar
+        function formatMatrix(matrix) {
+            let result = '';
+            for (let i = 0; i < matrix.length; i++) {
+                result += '| ';
+                for (let j = 0; j < matrix[i].length; j++) {
+                    result += matrix[i][j].toFixed(2).padStart(8) + ' ';
+                }
+                result += '|\n';
+            }
+            return result;
+        }
+    </script>
 </body>
 
 </html>
